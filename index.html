@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FF BETTER ZONE</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+body{background:#0a0a0a;color:white;padding-bottom:30px}
+.header{text-align:center;padding:20px;background:#000;border-bottom:1px solid #ffcc00}
+.header h1{color:#ffcc00;font-size:30px}
+.prize{display:flex;gap:10px;justify-content:center;padding:15px}
+.prize div{background:#1a1a1a;border:1px solid #333;border-radius:12px;padding:12px;text-align:center;flex:1}
+.prize b{color:#ffcc00;font-size:22px}
+.tabs{display:flex;gap:10px;justify-content:center;margin:10px}
+.tabs button{padding:10px 18px;border:none;border-radius:10px;font-weight:700;cursor:pointer}
+.active{background:#ffcc00;color:black}.inactive{background:#2a2a2a;color:white}
+.box{max-width:450px;margin:15px auto;background:#141414;padding:20px;border-radius:16px;border:1px solid #333}
+.box h2{color:#ffcc00;margin-bottom:10px}
+input,select{width:100%;padding:12px;margin:8px 0;border-radius:10px;border:1px solid #444;background:#0a0a0a;color:white;outline:none}
+.btn{width:100%;padding:13px;background:#ffcc00;color:black;border:none;border-radius:10px;font-weight:800;font-size:16px;cursor:pointer;margin-top:10px}
+.live{border:2px solid #00ff88 !important;text-align:center}.live h2{color:#00ff88 !important}
+.copyBtn{background:#00ff88 !important}.joinBtn{background:#25D366 !important;color:white !important}
+.tour{border:1px solid #444;border-radius:12px;padding:12px;margin:10px 0;background:#0a0a0a}
+.tour b{color:#ffcc00}.tour span{font-size:12px;background:#ffcc00;color:black;padding:3px 8px;border-radius:20px;font-weight:800;float:right}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="header"><h1>🔥 FF BETTER ZONE</h1><p>Play • Compete • Win</p></div>
+<div class="prize"><div>🥇 1st<br><b>₹100</b></div><div>🥈 2nd<br><b>₹50</b></div><div>🥉 3rd<br><b>₹25</b></div></div>
+<div class="tabs"><button id="btnReg" class="active" onclick="showTab('reg')">Registration</button><button id="btnAdmin" class="inactive" onclick="showTab('admin')">Admin Panel</button></div>
+<div class="box live"><h2>🟢 LIVE ROOM</h2><p id="liveStatus">Loading...</p>
+<div id="liveDetails" class="hidden"><p>Room ID: <b id="showRoomId" style="color:#ffe600;font-size:24px">-</b></p><p>Password: <b id="showRoomPass" style="color:#ffe600;font-size:24px">-</b></p><button class="btn copyBtn" onclick="copyRoom()">COPY KARO</button></div>
+<button class="btn joinBtn" onclick="joinNow()">📲 JOIN TOURNAMENT</button><p id="lastUpdate" style="font-size:11px;opacity:.6"></p></div>
+<div class="box"><h2>🏆 UPCOMING TOURNAMENTS</h2>
+<div class="tour"><span>LIVE SOON</span><b>🔥 Daily Solo</b><br>Aaj 7 PM | Entry ₹20 | Prize ₹100<br><button class="btn" onclick="joinNow()">JOIN NOW</button></div>
+<div class="tour"><span>OPEN</span><b>⚔️ Duo Tournament</b><br>Kal 2 PM | Entry ₹40 | Prize ₹200<br><button class="btn" onclick="joinNow()">JOIN NOW</button></div>
+<div class="tour"><span>OPEN</span><b>👑 Mega Sunday</b><br>Sunday 6 PM | Entry ₹20 | Prize ₹500<br><button class="btn" onclick="joinNow()">JOIN NOW</button></div></div>
+<div class="box" id="tab-reg"><h2>🎮 Tournament Registration</h2><p>Entry Fee: <b style="color:#ffcc00">₹20</b></p><p>Player Name *</p><input id="pname" placeholder="Apna naam"><p>Free Fire UID *</p><input id="uid" placeholder="Apni UID"><p>WhatsApp Number *</p><input id="phone" placeholder="10 digit number"><p>Game Mode *</p><select id="mode"><option>Solo - ₹20</option><option>Duo - ₹40</option></select><p>Payment Screenshot *</p><input type="file"><button class="btn" onclick="alert('Registration ho gaya!')">Submit Registration</button></div>
+<div class="box hidden" id="tab-admin"><h2>🔐 Admin Panel</h2><p>Admin Password *</p><input type="password" id="adminPass" placeholder="Password dalo"><button class="btn" onclick="unlockAdmin()">Unlock</button><div id="adminControls" class="hidden"><p style="color:#00ff88;font-weight:700">✅ Admin Unlock Ho Gaya</p><p>Room ID *</p><input id="newRoomId" placeholder="Jaise: 12345678"><p>Room Password *</p><input id="newRoomPass" placeholder="Jaise: 1234"><button class="btn" onclick="updateRoom()">LIVE ROOM UPDATE KARO</button><button class="btn" style="background:#ff4444;color:white" onclick="offRoom()">ROOM OFF KARO</button></div></div>
+<script>
+const BIN_ID="ffbetterzone-amit-2026";const API="https://api.npoint.io/"+BIN_ID;let ADMIN_PASSWORD="admin123";
+function joinNow(){showTab('reg');document.getElementById('tab-reg').scrollIntoView({behavior:'smooth'});alert('Neeche naam, UID aur number bhar ke Submit karo - Join ho jayega!');}
+function showTab(t){document.getElementById('tab-reg').classList.toggle('hidden',t!=='reg');document.getElementById('tab-admin').classList.toggle('hidden',t!=='admin');document.getElementById('btnReg').className=t==='reg'?'active':'inactive';document.getElementById('btnAdmin').className=t==='admin'?'active':'inactive';}
+function unlockAdmin(){if(document.getElementById('adminPass').value===ADMIN_PASSWORD){document.getElementById('adminControls').classList.remove('hidden');alert('Admin Unlock ho gaya!');}else{alert('Galat Password!');}}
+async function loadRoom(){try{let r=await fetch(API);let d=await r.json();if(d.live){document.getElementById('showRoomId').innerText=d.id;document.getElementById('showRoomPass').innerText=d.pass;document.getElementById('liveDetails').classList.remove('hidden');document.getElementById('liveStatus').innerText="🔴 LIVE HAI - Jaldi Join Karo!";}else{document.getElementById('liveDetails').classList.add('hidden');document.getElementById('liveStatus').innerText="Room abhi off hai. Match se 10 min pehle ID yaha aayega.";}}catch(e){document.getElementById('liveStatus').innerText="Room abhi off hai.";}}
+async function updateRoom(){let id=document.getElementById('newRoomId').value;let ps=document.getElementById('newRoomPass').value;if(!id||!ps){alert('Room ID aur Password dono dalo!');return;}await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:id,pass:ps,live:true})});loadRoom();alert('Ho gaya! Ab SABKE phone me Room ID dikhega.');}
+async function offRoom(){await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:"-",pass:"-",live:false})});loadRoom();alert('Room OFF ho gaya.');}
+function copyRoom(){let t="Room ID: "+document.getElementById('showRoomId').innerText+" Password: "+document.getElementById('showRoomPass').innerText;navigator.clipboard.writeText(t);alert('Copy ho gaya! '+t);}
+loadRoom();setInterval(loadRoom,10000);
+</script>
+</body>
+</html>

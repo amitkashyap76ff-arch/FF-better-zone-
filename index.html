@@ -50,5 +50,12 @@ async function offRoom(){await fetch(API,{method:'POST',headers:{'Content-Type':
 function copyRoom(){let t="Room ID: "+document.getElementById('showRoomId').innerText+" Password: "+document.getElementById('showRoomPass').innerText;navigator.clipboard.writeText(t);alert('Copy ho gaya! '+t);}
 loadRoom();setInterval(loadRoom,10000);
 </script>
+<div style="text-align:center; padding:20px; background:#fff; border-radius:15px; margin:20px;">
+  <h2 style="color:#000;">Scan to Pay 💰</h2>
+  <img src="IMG-20261120-WA0071.jpg" style="width:250px; max-width:90%; border-radius:10px;">
+  <p style="font-size:18px; font-weight:bold;">Amit Kashyap</p>
+  <p>UPI ID: 9277056363@fam</p>
+  <p>Payment karke screenshot WhatsApp pe bhejo</p>
+</div>
 </body>
 </html>
